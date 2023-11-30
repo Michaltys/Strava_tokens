@@ -5,6 +5,16 @@ from Tokens.models import Athlete
 
 # Create your views here.
 
+#def strava_success(request):
+#
+#    return render(request, 'Runnin/strava_success.html')
+#
+#
+#def strava_error(request):
+#
+#    return render(request, 'Runnin/strava_error.html')
+
+
 def initiate_strava_auth(request):
     strava_auth_url = (
         "https://www.strava.com/oauth/authorize"
