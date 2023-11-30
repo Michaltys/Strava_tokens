@@ -1,7 +1,8 @@
 from pathlib import Path
 import environ
 import os
-from decouple import config
+from decouple import config, Csv
+from urllib.parse import urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -67,20 +68,36 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Runnin_tokens.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# If it uses Azure
+azure_conn_str = os.environ.get('AZURE_POSTGRESQL_CONNECTIONSTRING')
+if azure_conn_str:
+    parsed_conn = urlparse(azure_conn_str)
+    DB_NAME = parsed_conn.path[1:]  # Usunięcie '/' z początku ścieżki
+    DB_USER = parsed_conn.username
+    DB_PASSWORD = parsed_conn.password
+    DB_HOST = parsed_conn.hostname
+    DB_PORT = parsed_conn.port
+else:
+    # else If locally use .env
+    DB_NAME = config('DB_NAME')
+    DB_USER = config('DB_USER')
+    DB_PASSWORD = config('DB_PASSWORD')
+    DB_HOST = config('DB_HOST')
+    DB_PORT = config('DB_PORT', default=5432, cast=int)
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('NAME'),
-        'USER': config('USER'),
-        'PASSWORD': config('PASSWORD'),
-        'HOST': config('HOST'),
-        'PORT': config('PORT'),
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
+
+
+
 
 
 # Password validation
