@@ -69,35 +69,32 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Runnin_tokens.wsgi.application'
 
 # If it uses Azure
-azure_conn_str = os.environ.get('AZURE_POSTGRESQL_CONNECTIONSTRING')
-if azure_conn_str:
-    parsed_conn = urlparse(azure_conn_str)
-    DB_NAME = parsed_conn.path[1:]  # Usunięcie '/' z początku ścieżki
-    DB_USER = parsed_conn.username
-    DB_PASSWORD = parsed_conn.password
-    DB_HOST = parsed_conn.hostname
-    DB_PORT = parsed_conn.port
-else:
-    # else If locally use .env
-    DB_NAME = config('DB_NAME')
-    DB_USER = config('DB_USER')
-    DB_PASSWORD = config('DB_PASSWORD')
-    DB_HOST = config('DB_HOST')
-    DB_PORT = config('DB_PORT', default=5432, cast=int)
+#azure_conn_str = os.environ.get('AZURE_POSTGRESQL_CONNECTIONSTRING')
+#if azure_conn_str:
+#    parsed_conn = urlparse(azure_conn_str)
+#    DB_NAME = parsed_conn.path[1:]  # Usunięcie '/' z początku ścieżki
+#    DB_USER = parsed_conn.username
+#    DB_PASSWORD = parsed_conn.password
+#    DB_HOST = parsed_conn.hostname
+#    DB_PORT = parsed_conn.port
+#else:
+#    # else If locally use .env
+#    DB_NAME = config('DB_NAME')
+#    DB_USER = config('DB_USER')
+#    DB_PASSWORD = config('DB_PASSWORD')
+#    DB_HOST = config('DB_HOST')
+#    DB_PORT = config('DB_PORT', default=5432, cast=int)
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
+        'NAME': config.dbname,
+        'USER': config.user,
+        'PASSWORD': config.password,
+        'HOST': config.host,
+        'PORT': config.port,
     }
 }
-
-
-
 
 
 # Password validation
