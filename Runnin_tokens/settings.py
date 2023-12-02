@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', 'Runnin.pythonanywhere.com']
 
 
 #import SECRET_KEY from AZURE (server) or from config (local purpose)
@@ -68,31 +68,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Runnin_tokens.wsgi.application'
 
-# If it uses Azure
-#azure_conn_str = os.environ.get('AZURE_POSTGRESQL_CONNECTIONSTRING')
-#if azure_conn_str:
-#    parsed_conn = urlparse(azure_conn_str)
-#    DB_NAME = parsed_conn.path[1:]  # Usunięcie '/' z początku ścieżki
-#    DB_USER = parsed_conn.username
-#    DB_PASSWORD = parsed_conn.password
-#    DB_HOST = parsed_conn.hostname
-#    DB_PORT = parsed_conn.port
-#else:
-#    # else If locally use .env
-#    DB_NAME = config('DB_NAME')
-#    DB_USER = config('DB_USER')
-#    DB_PASSWORD = config('DB_PASSWORD')
-#    DB_HOST = config('DB_HOST')
-#    DB_PORT = config('DB_PORT', default=5432, cast=int)
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config.dbname,
-        'USER': config.user,
-        'PASSWORD': config.password,
-        'HOST': config.host,
-        'PORT': config.port,
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
 
@@ -135,6 +119,7 @@ environ.Env.read_env()
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

@@ -20,3 +20,5 @@ class Athlete(models.Model):
     sex = models.CharField(max_length=5, null = True, blank = True)
     follower_count = models.IntegerField(null = True, blank = True)
     following_count = models.IntegerField(null = True, blank = True)
+
+# def __str__(self):
