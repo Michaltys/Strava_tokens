@@ -5,6 +5,7 @@ from Tokens.models import Athlete
 
 # Create your views here.
 
+
 def strava_success(request):
     return render(request, 'Runnin/strava_success.html')
 
@@ -24,6 +25,7 @@ def initiate_strava_auth(request):
     ).format(
         client_id=settings.STRAVA_CLIENT_ID,
         redirect_uri="http://127.0.0.1:8000/Runnin/strava_callback/" 
+        #tutaj zagnieździć url do endpointa hosta
     )
 
     return redirect(strava_auth_url)
@@ -78,4 +80,4 @@ def strava_callback(request):
         else:
             return redirect('strava_error')
     else:
-        return redirect('trava_error')
+        return redirect('strava_error')
